@@ -1,0 +1,24 @@
+{
+  "name": "nodejs_api",
+  "version": "1.0.0",
+  "description": "NodeJS API",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KnifeSGS/nodejs_api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KnifeSGS/nodejs_api/issues"
+  },
+  "homepage": "https://github.com/KnifeSGS/nodejs_api#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
