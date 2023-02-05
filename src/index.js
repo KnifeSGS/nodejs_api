@@ -8,6 +8,11 @@ const port = 3000
 
 app.use(morgan('combined', { stream: logger.stream }))
 
+// statikus mappák beállítása, pl képek eléréséhez ha a gyökérben van
+// app.use('/images', express.static('images'))
+// statikus mappák beállítása, pl képek, js, egyéb eléréséhez a public mappából
+app.use(express.static('public'))
+
 app.use(bodyParser.json())
 app.use('/person', require('./controllers/person/routes'))
 
