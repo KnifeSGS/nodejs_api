@@ -1,16 +1,20 @@
 const express = require('express')
-const data = require('./data')
 const createError = require('http-errors')
+const data = require('./data')
+const Person = require('../../models/person.model')
+const logger = require('../../config/logger')
 
 const controller = express.Router()
 
-controller.get('/', (req, res) => {
-  res.json(data)
+controller.get('/', async (req, res) => {
+  const people = await Person.find()
+  logger.debug(`Get all people, returning ${people.length} items.`)
+  res.json(people)
 })
 
 // Get one person
-controller.get('/:id', (req, res, next) => {
-  const person = data.find(p => p.id === Number(req.params.id))
+controller.get('/:id', async (req, res, next) => {
+  const person = await Person.findById(req.params.id)
   if (!person) {
     return next(new createError.NotFound("Person not found"))
   }
@@ -23,39 +27,51 @@ controller.post('/', (req, res, next) => {
   if (!last_name || !first_name || !email) {
     return next(new createError.BadRequest("Missing properties!"))
   }
-  const newPerson = req.body
-  newPerson.id = data[data.length - 1].id + 1
-  data.push(newPerson)
-
-  res.status(201)
-  res.json(newPerson)
+  const newPerson = new Person({
+    firstName: first_name,
+    lastName: last_name,
+    email: email
+  })
+  newPerson.save()
+    .then(data => {
+      res.status(201)
+      res.json(data)
+    })
 })
 
 // Update a person
-controller.put('/:id', (req, res, next) => {
+controller.put('/:id', async (req, res, next) => {
   const id = req.params.id
-  const index = data.findIndex(p => p.id === Number(id))
   const { first_name, last_name, email } = req.body
   if (!last_name || !first_name || !email) {
     return next(new createError.BadRequest("Missing properties!"))
   }
-  data[index] = {
-    id,
-    first_name,
-    last_name,
-    email
-  }
 
-  res.json(data[index])
+  const update = {
+    firstName: first_name,
+    lastName: last_name,
+    email: email
+  }
+  let person = {}
+  try {
+    person = await Person.findByIdAndUpdate(id, update, {
+      new: true,
+      useFindAndModify: false
+    })
+  } catch (err) {
+    return next(new createError.BadRequest(err))
+  }
+  return res.json(person)
 })
 
 // Delete one person
-controller.delete('/:id', (req, res, next) => {
-  const index = data.findIndex(p => p.id === Number(req.params.id))
-  if (index === -1) {
+controller.delete('/:id', async (req, res, next) => {
+  const { id } = req.params
+  try {
+    const person = await Person.findByIdAndDelete(id)
+  } catch (err) {
     return next(new createError.NotFound("Person not found"))
   }
-  data.splice(index, 1)
   res.json({})
 })
 
