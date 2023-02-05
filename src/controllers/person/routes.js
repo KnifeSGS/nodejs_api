@@ -7,10 +7,16 @@ controller.get('/', (req, res) => {
   res.json(data)
 })
 
+// Get one person
+controller.get('/:id', (req, res) => {
+  const person = data.find(p => p.id === Number(req.params.id))
+  res.json(person)
+})
+
 // Create a new person
 controller.post('/', (req, res) => {
   const newPerson = req.body
-  newPerson.id = data[data.length - 1] + 1
+  newPerson.id = data[data.length - 1].id + 1
   data.push(newPerson)
 
   res.status(201)
@@ -30,8 +36,14 @@ controller.put('/:id', (req, res) => {
     email
   }
 
-  res.status(200)
   res.json(data[index])
+})
+
+// Delete one person
+controller.delete('/:id', (req, res) => {
+  const index = data.findIndex(p => p.id === Number(req.params.id))
+  data.splice(index, 1)
+  res.json({})
 })
 
 module.exports = controller
