@@ -18,7 +18,7 @@ exports.findOne = (req, res, next) => {
       if (!person) {
         return next(new createError.NotFound('Person is not found'))
       }
-      return person
+      return res.json(person)
     })
 }
 
@@ -74,5 +74,3 @@ exports.delete = (req, res, next) => {
       next(new createError.InternalServerError(err.message))
     })
 }
-
-module.exports = controller
