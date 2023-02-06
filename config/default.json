@@ -1,0 +1,7 @@
+{
+  "database": {
+    "username": "nodeuser",
+    "password": "DMVv5TnausSH",
+    "host": "cluster0.3dzoc0v.mongodb.net/?retryWrites=true&w=majority"
+  }
+}
