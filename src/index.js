@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
@@ -7,12 +8,12 @@ const mongoose = require('mongoose')
 mongoose.Promise = global.Promise
 // nodeuser DMVv5TnausSH
 
-const port = 3000
+const port = process.env.PORT || 3000
 
 // DB connection
 mongoose
   .set('strictQuery', false)
-  .connect('mongodb+srv://nodeuser:DMVv5TnausSH@cluster0.3dzoc0v.mongodb.net/?retryWrites=true&w=majority', {
+  .connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}`, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
