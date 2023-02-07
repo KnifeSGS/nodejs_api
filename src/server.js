@@ -3,9 +3,13 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
+const swaggerUi = require('swagger-ui-express')
+const YAML = require('yamljs')
 const logger = require('./config/logger')
 const mongoose = require('mongoose')
 mongoose.Promise = global.Promise
+
+const swaggerDocument = YAML.load('./docs/swagger.yaml')
 
 const { username, password, host } = config.get('database')
 mongoose
@@ -30,6 +34,7 @@ app.use(express.static('public'))
 app.use(bodyParser.json())
 app.use('/person', require('./controllers/person/person.routes'))
 app.use('/post', require('./controllers/post/post.routes'))
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 app.use((err, req, res, next) => {
   res.status(err.statusCode)
