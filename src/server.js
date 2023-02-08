@@ -19,7 +19,8 @@ const swaggerDocument = YAML.load('./docs/swagger.yaml')
 const { username, password, host } = config.get('database')
 mongoose
   .set('strictQuery', false)
-  .connect(`mongodb+srv://${username}:${password}@${host}`, {
+  // .connect(`mongodb+srv://${username}:${password}@${host}`, {
+  .connect(`mongodb://${host}`, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
