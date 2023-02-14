@@ -4,12 +4,19 @@ const createError = require('http-errors')
 const personService = require('./person.service')
 
 // Get people
-exports.findAll = (req, res, next) => {
-  return personService.findAll()
-    .then(people => {
-      res.json(people);
-    });
-};
+// exports.findAll = (req, res, next) => {
+//   return personService.findAll()
+//     .then(people => {
+//       res.json(people);
+//     });
+// };
+exports.findAll = async (req, res, next) => {
+  const numOfPeople = await personService.count()
+  res.setHeader('X-Total-Count', numOfPeople)
+
+  const allPeople = await personService.findAll()
+  res.json(allPeople)
+}
 
 // Get one person
 exports.findOne = (req, res, next) => {

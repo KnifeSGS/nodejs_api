@@ -12,3 +12,5 @@ exports.findOne = id => Person.findById(id).populate('posts')
 exports.update = (id, updateData) => Person.findByIdAndUpdate(id, updateData, { new: true })
 
 exports.delete = id => Person.findByIdAndRemove(id)
+
+exports.count = () => Person.countDocuments()
