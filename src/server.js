@@ -30,6 +30,14 @@ mongoose
     process.exit()
   })
 
+app.use(function (req, res, next) {
+  res.setHeader(
+    'Content-Security-Policy-Report-Only',
+    "default-src 'self'; base-uri 'none'"
+  );
+  next();
+});
+
 app.use(morgan('combined', { stream: logger.stream }))
 // statikus mappák beállítása, pl képek eléréséhez ha a gyökérben van
 // app.use('/images', express.static('images'))
@@ -41,8 +49,18 @@ app.use(bodyParser.json())
 app.post('/login', authHandler.login)
 app.post('/refresh', authHandler.refresh)
 app.post('/logout', authHandler.logout)
-app.use('/person', authenticateJwt, require('./controllers/person/person.routes'))
-app.use('/post', authenticateJwt, adminOnly, require('./controllers/post/post.routes'))
+app.use('/person', require('./controllers/person/person.routes'))
+app.use('/user', require('./controllers/user/user.routes'))
+app.use('/journal', require('./controllers/journal/journal.routes'))
+app.use('/monitoring', require('./controllers/monitoring/monitoring.routes'))
+app.use('/shift', require('./controllers/shift/shift.routes'))
+app.use('/post', require('./controllers/post/post.routes'))
+// app.use('/person', authenticateJwt, require('./controllers/person/person.routes'))
+// app.use('/user', authenticateJwt, require('./controllers/user/user.routes'))
+// app.use('/journal', authenticateJwt, require('./controllers/journal/journal.routes'))
+// app.use('/monitoring', authenticateJwt, require('./controllers/monitoring/monitoring.routes'))
+// app.use('/shift', authenticateJwt, require('./controllers/shift/shift.routes'))
+// app.use('/post', authenticateJwt, adminOnly, require('./controllers/post/post.routes'))
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 app.use((err, req, res, next) => {

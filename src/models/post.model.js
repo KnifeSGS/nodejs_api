@@ -16,7 +16,7 @@ const PostSchema = mongoose.Schema({
     required: true
   }
 }, {
-  timeStamps: true
+  timestamps: true
 })
 
 PostSchema.plugin(idValidator)
