@@ -6,6 +6,7 @@ const morgan = require('morgan')
 const swaggerUi = require('swagger-ui-express')
 const YAML = require('yamljs')
 const logger = require('./config/logger')
+const cors = require('./config/cors')
 const mongoose = require('mongoose')
 mongoose.Promise = global.Promise
 
@@ -38,6 +39,7 @@ app.use(function (req, res, next) {
   next();
 });
 
+app.use(cors());
 app.use(morgan('combined', { stream: logger.stream }))
 // statikus mappák beállítása, pl képek eléréséhez ha a gyökérben van
 // app.use('/images', express.static('images'))
@@ -52,7 +54,7 @@ app.post('/logout', authHandler.logout)
 app.use('/person', require('./controllers/person/person.routes'))
 app.use('/user', require('./controllers/user/user.routes'))
 app.use('/journal', require('./controllers/journal/journal.routes'))
-app.use('/monitoring', require('./controllers/monitoring/monitoring.routes'))
+// app.use('/monitoring', require('./controllers/monitoring/monitoring.routes'))
 app.use('/shift', require('./controllers/shift/shift.routes'))
 app.use('/post', require('./controllers/post/post.routes'))
 // app.use('/person', authenticateJwt, require('./controllers/person/person.routes'))

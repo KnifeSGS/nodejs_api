@@ -11,5 +11,7 @@ if (!config.has('database')) {
   process.exit()
 }
 
+process.env.TZ = "Europe/Hungary";
+
 app.listen(port, () =>
   console.log(`App listening at http://localhost:${port}`))

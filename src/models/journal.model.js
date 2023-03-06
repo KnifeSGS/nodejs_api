@@ -1,4 +1,6 @@
 const mongoose = require('mongoose')
+const moment = require('moment-timezone')
+const dateHungary = moment.tz(Date.now(), "Europe/Budapest")
 const idValidator = require('mongoose-id-validator')
 
 const JournalSchema = mongoose.Schema({
@@ -7,7 +9,10 @@ const JournalSchema = mongoose.Schema({
     ref: 'User',
     required: true
   },
-  date: { type: Date, default: Date.now },
+  date: {
+    type: Date,
+    default: dateHungary
+  },
   checks: {
     type: mongoose.Schema.Types.Array,
     ref: 'Monitoring'
@@ -16,7 +21,7 @@ const JournalSchema = mongoose.Schema({
     type: mongoose.Schema.Types.Array,
     ref: 'Shift'
   },
-  comment: String
+  comment: [[]]
 }, {
   timestamps: true
 })

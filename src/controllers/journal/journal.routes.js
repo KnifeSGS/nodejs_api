@@ -18,7 +18,7 @@ router.get('/:id', (req, res, next) => {
 })
 
 // update
-router.put('/:id', (req, res, next) => {
+router.patch('/:id', (req, res, next) => {
   return controller.update(req, res, next)
 })
 

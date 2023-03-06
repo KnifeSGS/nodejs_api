@@ -2,12 +2,13 @@ const mongoose = require('mongoose')
 const idValidator = require('mongoose-id-validator')
 
 const MonitoringSchema = mongoose.Schema({
-  journal: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Journal'
-  },
+  // journal: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'Journal'
+  // },
   checking: Number,
   temperature: Number,
+  percipitation: String,
   sky: String,
   visibility: String,
   roads: String,
