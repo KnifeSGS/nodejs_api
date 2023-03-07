@@ -29,6 +29,8 @@ exports.create = (req, res, next) => {
   if (!worker) {
     return next(new createError.BadRequest("Missing properties!"))
   }
+  const commentDate = new Date().toString().slice(4, 24);
+  const commentArr = [commentDate, comment]
 
   const newJournal = {
     worker,
@@ -37,7 +39,7 @@ exports.create = (req, res, next) => {
       : moment.tz(Date.now(), "Europe/Budapest"),
     checks,
     shifts,
-    comment
+    comment: comment ? commentArr : ""
   }
   return journalService.create(newJournal)
     .then(createdJournal => {

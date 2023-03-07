@@ -23,16 +23,19 @@ exports.findOne = (req, res, next) => {
 // Create a new user
 exports.create = (req, res, next) => {
   const { first_name, last_name, email, role, active } = req.body
-  if (!last_name || !first_name || !email || !role || !active) {
+  if (!first_name || !last_name || !email) {
     return next(new createError.BadRequest("Missing properties!"))
   }
+
   const newUser = {
     first_name,
     last_name,
+    full_name: first_name + ' ' + last_name,
     email,
     role,
     active
   }
+
   return userService.create(newUser)
     .then(createduser => {
       res.status(201)
@@ -44,13 +47,14 @@ exports.create = (req, res, next) => {
 // Update a user
 exports.update = (req, res, next) => {
   const { first_name, last_name, email, role, active } = req.body
-  if (!first_name || !last_name || !email || !role || !active) {
+  if (!first_name || !last_name || !email) {
     return next(new createError.BadRequest("Missing properties!"))
   }
 
   const update = {
     first_name,
     last_name,
+    full_name: first_name + ' ' + last_name,
     email,
     role,
     active
